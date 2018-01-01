@@ -49,6 +49,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
 ]
 
 ROOT_URLCONF = 'lez.urls'
@@ -123,8 +124,11 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-PROJECT_DIR = os.path.dirname(os.path.abspath(__file__))
-STATIC_ROOT = os.path.join(PROJECT_DIR, '../static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'static'),
+)
 
 # Auth
 
@@ -137,3 +141,15 @@ AUTHENTICATION_BACKENDS = (
 )
 
 LOGOUT_REDIRECT_URL = '/'
+
+if os.environ.get('ENVIRONMENT') == 'heroku':
+    print("Configuring for Heroku")
+    DEBUG = False
+    # Update database configuration with $DATABASE_URL.
+    import dj_database_url
+    db_from_env = dj_database_url.config(conn_max_age=500)
+    DATABASES['default'].update(db_from_env)
+
+    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+    ALLOWED_HOSTS = ['lez.mamota.net', 'lez.herokuapp.com']
