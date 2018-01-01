@@ -1,0 +1,235 @@
+*{
+  margin:0;
+  padding:0;
+  box-sizing: border-box;
+}
+a{
+  color:#000;
+  text-decoration: none;
+}
+body, html{
+  height:100%;
+  width:100%;
+}
+body{
+  background: #8df5e2;
+  font-family: 'Open Sans Condensed', sans-serif;
+}
+
+input, button{
+  font-family: 'Open Sans Condensed', sans-serif;
+}
+
+#login{
+  line-height: 1.6rem;
+}
+
+#login-shade{
+  position: fixed;
+  width:100%;
+  height: 100%;
+  left:0;
+  top:0;
+  background: rgba(0,0,0,0.6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transition: opacity 0.3s ease-in-out;
+  pointer-events: none;
+}
+
+#login-shade.visible{
+  opacity: 1;
+  pointer-events: all;
+}
+
+#login-shade section{
+  width: 20rem;
+  background: #fff;
+  border-radius: 1rem;
+  padding: 1rem;
+}
+
+.btn-auth {
+  width: 50%;
+  float: left;
+  background: rgba(0,0,0,0.05);
+  border: none;
+  font-size: 120%;
+  line-height: 140%;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  cursor: pointer;
+  display: block;
+  text-align: center;
+}
+
+.btn-auth:first-child {
+  border-top-left-radius: 1rem;
+  border-bottom-left-radius: 1rem;
+}
+
+.btn-auth:last-child {
+  border-top-right-radius: 1rem;
+  border-bottom-right-radius: 1rem;
+}
+
+.btn-auth.btn-google:hover{
+  color:#fff;
+  background: #CC0F0F;
+}
+
+.btn-auth.btn-email:hover{
+  color:#fff;
+  background: #13bf13
+}
+
+#app{
+  display: grid;
+}
+
+header{
+  position: fixed;
+  width:100%;
+  top:0;
+  height: 3rem;
+  background: #6efbec;
+  border-bottom: 0.2rem solid #927b4e;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  padding:0.5rem;
+}
+
+header a{
+  color: #000;
+}
+
+header #left{
+  grid-column: 1;
+}
+
+header #right{
+  font-family: 'Raleway', sans-serif;
+  grid-column: 3;
+  text-align: right;
+  padding: 0.2rem 2rem;
+}
+
+header #title{
+  grid-column: 2;
+  text-align: center;
+  font-size:140%;
+}
+
+#input-title{
+  font-family: 'Raleway', sans-serif;
+  background: none;
+  border: none;
+  border-bottom: 1px dashed rgba(255,255,255,0.4);
+  font-size:140%;
+}
+
+#app{
+  height: 100%;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+#app section{
+  padding-top:2rem;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+
+#input{
+  grid-column:1;
+}
+
+#output{
+  grid-column:2;
+  background: rgba(0,0,0,0.1)
+}
+
+#input h1{
+  margin-bottom: 2rem;
+  font-size:200%;
+}
+
+#input p{
+  font-family: 'Raleway', sans-serif;
+  margin-bottom:0.6rem;
+  padding:0 0.5rem;
+}
+
+#input-value{
+  font-size: 150%;
+  border: 1px solid rgba(0,0,0,0.5);
+  padding: 0.4rem 1rem;
+  border-radius: 2rem;
+  margin-bottom: 2rem;
+  font-weight: lighter;
+  width:80%;
+  max-width: 100%;
+}
+
+#btn-input{
+  background: transparent;
+  border: none;
+  padding: 0.4rem 1rem;
+  font-size: 150%;
+  margin-left: -3rem;
+  cursor: pointer;
+  opacity: 1;
+  transition: opacity 0.2s ease-in-out;
+}
+#btn-input.disabled{
+  opacity: 0.1;
+}
+#btn-input:hover{
+  opacity: 0.5;
+}
+
+.btn-lez{
+  background: rgba(255,255,255, 0.5);
+  border: 1px solid rgba(0,0,0,0.5);
+  padding: 0.4rem 1rem;
+  font-size:120%;
+  border-radius: 2rem;
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+}
+
+#output p{
+  margin-bottom:2rem;
+  font-size: 120%;
+}
+
+#output .suggestion{
+  font-family: 'Raleway', sans-serif;
+  font-size:200%;
+}
+
+#btn-yes:hover{
+  background: rgba(105, 245, 107, 0.5)
+}
+
+#btn-notnow:hover{
+  background: rgba(255, 192, 38, 0.5)
+}
+
+#btn-no:hover{
+  background: rgba(248, 105, 82, 0.5)
+}
+
+@media (max-width: 768px) {
+ #app{
+  grid-template-columns: repeat(1, 1fr);
+ }
+ #output{
+  grid-column: 1;
+ }
+}

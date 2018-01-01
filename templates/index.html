@@ -1,0 +1,77 @@
+{% load static %}
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>Lez</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+        <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css">
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Raleway" rel="stylesheet">
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
+        <link rel="stylesheet" href="{% static 'css/lez.css' %}">
+    </head>
+    <body>
+        <header>
+            <section id="left">
+                <input type="text" id="input-title">
+            </section>
+            <section id="title">
+                Lez
+            </section>
+            <section id="right">
+                {% if user.is_authenticated %}
+                    <a href="{% url 'logout' %}">Log Out</a>
+                {% else %}
+                    <a href="#" id="login"><i class="fa fa-user-circle"></i> Log in to save and create more lists</a>
+                {% endif %}
+            </section>
+        </header>
+        <div id="app">
+            <section id="input">
+                <div>
+                    <h1>Add Items</h1>
+                    <input type="text" id="input-value"><button class="btn-lez" id="btn-input"><i class="fa fa-plus-circle"></i></button>
+                    <p>Stressed out by the list of books you want to read growing too huge?</p>
+                    <p>Lez is like a todo list where you can't see the list.</p>
+                    <p>Add items any time, and when you want to read a book, Lez will suggest one.</p>
+                </div>
+            </section>
+            <section id="output">
+                <div>
+                    <p>How about...</p>
+                    <p class="suggestion" id="suggestion"></p>
+                    <div class="buttongroup">
+                        <button class="btn-lez" id="btn-yes"><i class="fa fa-check"></i> OK</button>
+                        <button class="btn-lez" id="btn-notnow"><i class="fa fa-clock-o"></i> Not Now</button>
+                        <button class="btn-lez" id="btn-no"><i class="fa fa-times"></i> Remove This</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+        <div id="login-shade">
+            <section>
+                <h1>Login with:</h1>
+                <div>
+                    <a class='btn-auth btn-google' href="{% url 'social:begin' 'google' %}" _blank="true"><i class="fa fa-google-plus" aria-hidden="true"></i> Google</a>
+                    <a class='btn-auth btn-email'><i class="fa fa-envelope-o" aria-hidden="true"></i> Email</a>
+                </div>
+            </section>
+        </div>
+        <script
+              src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+              integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
+              crossorigin="anonymous"></script>
+        <script>
+            let is_logged_in = {{ user.is_authenticated|yesno:"1,0" }}
+        </script>
+        <script src="{% static 'js/lez.js' %}"></script>
+        <!-- <script>
+            window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;
+            ga("create","UA-XXXXX-Y","auto");ga("send","pageview")
+        </script>
+        <script src="https://www.google-analytics.com/analytics.js" async defer></script> -->
+    </body>
+</html>
