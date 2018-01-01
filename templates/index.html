@@ -15,18 +15,17 @@
     </head>
     <body>
         <header>
-            <section id="left">
+            <section id="left" class="logged-in-only">
                 <input type="text" id="input-title">
             </section>
             <section id="title">
                 Lez
             </section>
             <section id="right">
-                {% if user.is_authenticated %}
-                    <a href="{% url 'logout' %}">Log Out</a>
-                {% else %}
-                    <a href="#" id="login"><i class="fa fa-user-circle"></i> Log in to save and create more lists</a>
-                {% endif %}
+                <a href="{% url 'logout' %}" class="logged-in-only">Log Out</a>
+                <span class="logged-out-only">
+                    <a href="#" id="login"><i class="fa fa-user-circle"></i> Log in</a> or <a href="#" id="register"> register</a> to save and create more lists
+                </span>
             </section>
         </header>
         <div id="app">
@@ -40,7 +39,7 @@
                 </div>
             </section>
             <section id="output">
-                <div>
+                <div class="contents">
                     <p>How about...</p>
                     <p class="suggestion" id="suggestion"></p>
                     <div class="buttongroup">
@@ -53,19 +52,28 @@
         </div>
         <div id="login-shade">
             <section>
-                <h1>Login with:</h1>
+                <h1><span class="login-reg">Login</span> with:</h1>
                 <div>
-                    <a class='btn-auth btn-google' href="{% url 'social:begin' 'google' %}" _blank="true"><i class="fa fa-google-plus" aria-hidden="true"></i> Google</a>
-                    <a class='btn-auth btn-email'><i class="fa fa-envelope-o" aria-hidden="true"></i> Email</a>
+                    <a class='btn-auth btn-google first' href="{% url 'social:begin' 'google' %}" _blank="true"><i class="fa fa-google-plus" aria-hidden="true"></i> Google</a>
+                    <button id="btn-login-email" class='last btn-auth btn-email'><i class="fa fa-envelope-o" aria-hidden="true"></i> Email</button>
+                    <div id="email-login">
+                        <input id="login-email" type="email" placeholder="email address">
+                        <span id="login-email-errors" class="form-errors"></span>
+                        <input id="login-password" type="password" placeholder="password">
+                        <span id="login-password-errors" class="form-errors"></span>
+                        <span id="login-all-errors" class="form-errors"></span>
+                        <button id="btn-signup" class='first last btn-auth btn-signup'><i class="fa fa-check" aria-hidden="true"></i> <span class="login-reg">Login</span></button>
+                    </div>
                 </div>
             </section>
         </div>
         <script
-              src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-              integrity="sha256-k2WSCIexGzOj3Euiig+TlR8gA0EmPjuc79OEeY5L45g="
+              src="https://code.jquery.com/jquery-3.2.1.min.js"
+              integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
               crossorigin="anonymous"></script>
         <script>
             let is_logged_in = {{ user.is_authenticated|yesno:"1,0" }}
+            const csrf_token = "{{ csrf_token }}"
         </script>
         <script src="{% static 'js/lez.js' %}"></script>
         <!-- <script>

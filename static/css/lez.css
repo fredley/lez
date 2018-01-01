@@ -65,24 +65,66 @@ input, button{
   text-align: center;
 }
 
-.btn-auth:first-child {
+.btn-auth:hover{
+  color:#fff;
+}
+
+.btn-auth.first {
   border-top-left-radius: 1rem;
   border-bottom-left-radius: 1rem;
 }
 
-.btn-auth:last-child {
+.btn-auth.last {
   border-top-right-radius: 1rem;
   border-bottom-right-radius: 1rem;
 }
 
-.btn-auth.btn-google:hover{
-  color:#fff;
-  background: #CC0F0F;
+.btn-auth.first.last{
+  width:100%;
+  border:1px solid rgba(0,0,0,0.2);
 }
 
-.btn-auth.btn-email:hover{
-  color:#fff;
-  background: #13bf13
+.btn-auth.btn-email.active{
+  background: #13bf13;
+}
+
+.btn-auth.btn-google:hover,
+.btn-auth.btn-cancel:hover{ background: #CC0F0F; }
+.btn-auth.btn-email:hover,
+.btn-auth.btn-signup:hover{ background: #13bf13; }
+
+.form-errors {
+  color: #e60707;
+  margin: -1rem 0 0.5rem 0;
+  padding: 0 1rem;
+  display: block;
+  float: left;
+}
+
+#email-login{
+  background: rgba(0,0,0,0.05);
+  clear: both;
+  margin-top: 0.5rem;
+  float: left;
+  padding: 0;
+  height: 0;
+  border-radius: 1rem;
+  transition: height 0.2s ease-in-out, padding 0.2s ease-in-out;
+  overflow: hidden;
+}
+
+#email-login.visible{
+  height: auto;
+  padding: 0.25rem;
+}
+
+#email-login input {
+  width: 100%;
+  border: 1px solid #555;
+  padding: 0.5rem 1rem;
+  margin: 0.5rem 0;
+  border-radius: 1rem;
+  font-size: 120%;
 }
 
 #app{
@@ -152,6 +194,15 @@ header #title{
 #output{
   grid-column:2;
   background: rgba(0,0,0,0.1)
+}
+
+#output .contents{
+  opacity: 0;
+  transition: opacity 0.25s ease-in-out;
+}
+
+#output .contents.visible{
+  opacity: 1;
 }
 
 #input h1{
