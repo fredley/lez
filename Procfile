@@ -1,1 +1,1 @@
-web: uwsgi --module=lez.wsgi:application
+web: uwsgi --http-socket=$PORT --virtualenv=$HOME --master --module=lez.wsgi:application
