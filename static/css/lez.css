@@ -172,6 +172,10 @@ header #title{
   font-size:140%;
 }
 
+#input-title.editing{
+  font-style:italic;
+}
+
 #app{
   height: 100%;
   display: grid;
@@ -185,6 +189,7 @@ header #title{
   align-items: center;
   justify-content: center;
   height: 100%;
+  flex-direction: column;
 }
 
 #input{
@@ -196,13 +201,15 @@ header #title{
   background: rgba(0,0,0,0.1)
 }
 
-#output .contents{
+#output > div{
   opacity: 0;
   transition: opacity 0.25s ease-in-out;
+  display: none;
 }
 
-#output .contents.visible{
+#output > div.visible{
   opacity: 1;
+  display: block;
 }
 
 #input h1{

@@ -22,7 +22,7 @@
                 Lez
             </section>
             <section id="right">
-                <a href="{% url 'logout' %}" class="logged-in-only">Log Out</a>
+                <a href="{% url 'logout' %}" class="logged-in-only" id="logout">Log Out</a>
                 <span class="logged-out-only">
                     <a href="#" id="login"><i class="fa fa-user-circle"></i> Log in</a> or <a href="#" id="register"> register</a> to save and create more lists
                 </span>
@@ -47,6 +47,12 @@
                         <button class="btn-lez" id="btn-notnow"><i class="fa fa-clock-o"></i> Not Now</button>
                         <button class="btn-lez" id="btn-no"><i class="fa fa-times"></i> Remove This</button>
                     </div>
+                </div>
+                <div class="no-items">
+                    <h1>Your list is empty!</h1>
+                </div>
+                <div class="no-suggestions">
+                    <h1>No more suggestions for now, would you like to reset?</h1>
                 </div>
             </section>
         </div>

@@ -1,3 +1,5 @@
+import json
+
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import password_validation, authenticate, backends, login
 from django.contrib.auth.models import User
@@ -22,6 +24,46 @@ class GetLists(LoginRequiredMixin, View):
     })
 
 
+class AddList(LoginRequiredMixin, View):
+
+  http_method_names = ['post']
+
+  def post(self, request, *args, **kwargs):
+    ls = List.objects.create(
+      user=request.user,
+      title=request.POST.get('title')
+    )
+    if request.POST.get('values'):
+      for item in json.loads(request.POST.get('items')):
+        ListItem.objects.create(
+          list=ls,
+          value=item
+        )
+    return JsonResponse({'success': True, 'id': ls.id})
+
+
+class RemoveList(LoginRequiredMixin, View):
+
+  http_method_names = ['post']
+
+  def post(self, request, *args, **kwargs):
+    list = get_object_or_404(List, pk=list_id, user=request.user)
+    list.delete()
+    return JsonResponse({'success': True})
+
+
+class ModifyList(LoginRequiredMixin, View):
+
+  http_method_names = ['post']
+
+  def post(self, request, list_id, *args, **kwargs):
+    print(list_id, request.user.email)
+    list = get_object_or_404(List, pk=list_id, user=request.user)
+    list.title = request.POST.get('title')
+    list.save()
+    return JsonResponse({'success': True})
+
+
 class GetListItems(LoginRequiredMixin, View):
 
   http_method_names = ['get']
@@ -29,7 +71,8 @@ class GetListItems(LoginRequiredMixin, View):
   def get(self, request, list_id, *args, **kwargs):
     ls = get_object_or_404(List, pk=list_id, user=request.user)
     return JsonResponse({
-      'values': list(ListItem.objects.filter(list=ls).values_list('value', 'id'))
+      'title': ls.title,
+      'values': list(ListItem.objects.filter(list=ls).values('value', 'id'))
     })
 
 
@@ -39,11 +82,11 @@ class AddListItem(LoginRequiredMixin, View):
 
   def post(self, request, list_id, *args, **kwargs):
     ls = get_object_or_404(List, pk=list_id, user=request.user)
-    ListItem.objects.create(
+    item = ListItem.objects.create(
       list=ls,
-      value=kwargs['value']
+      value=request.POST.get('value')
     )
-    return JsonResponse({'success': True})
+    return JsonResponse({'success': True, 'id': item.id })
 
 
 class RemoveListItem(LoginRequiredMixin, View):
@@ -128,4 +171,4 @@ class LoginView(View):
       login(request, user)
       return JsonResponse({'success': True, 'lists': get_lists(user)})
     else:
-      return JsonResponse({'success': False, 'errors': {'all': 'Invalid login.'}})
+      return JsonResponse({'success': False, 'errors': {'all': ['Invalid login.']}})

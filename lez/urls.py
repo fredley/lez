@@ -3,7 +3,7 @@ from django.contrib.auth.views import logout
 from django.urls import path, include
 from django.views.generic.base import TemplateView
 
-from .views import GetLists, GetListItems, AddListItem, RemoveListItem, DumpLists, RegisterView, LoginView
+from .views import *
 
 urlpatterns = [
     path('', TemplateView.as_view(template_name="index.html"), name='index'),
@@ -15,10 +15,13 @@ urlpatterns = [
     path('api/', include([
       path('lists/', include([
         path('', GetLists.as_view()),
+        path('add/', AddList.as_view()),
         path('<int:list_id>/', include([
           path('', GetListItems.as_view()),
+          path('modify/', ModifyList.as_view()),
+          path('remove/', RemoveList.as_view()),
           path('add/', AddListItem.as_view()),
-          path('remove/', RemoveListItem.as_view()),
+          path('<int:list_item_id>/remove/',  RemoveListItem.as_view()),
         ])),
       ])),
       path('dump/', DumpLists.as_view()),
