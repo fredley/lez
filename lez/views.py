@@ -4,7 +4,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import password_validation, authenticate, backends, login
 from django.contrib.auth.models import User
 from django.core.validators import EmailValidator
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views import View
 
@@ -172,3 +172,8 @@ class LoginView(View):
       return JsonResponse({'success': True, 'lists': get_lists(user)})
     else:
       return JsonResponse({'success': False, 'errors': {'all': ['Invalid login.']}})
+
+class CertView(View):
+
+  def get(self, request, *args, **kwargs):
+    return HttpResponse('NIcxy-1cwG_a7cTRymHIa8NuXXdNx7JUqN-9ssEDGTc.hOvDsUSfna6BRI3xzex5j1ryvvHXok6rdsdnBG7EOFE')
