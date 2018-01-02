@@ -1,11 +1,3 @@
-const list_types = [
-  "recipe",
-  "books to read",
-  "article",
-  "TV show",
-  "todo"
-]
-
 const input_button = $("#btn-input")
 const input_field = $("#input-value")
 const input_title = $("#input-title")
@@ -202,12 +194,6 @@ const set_logged_out = () => {
 }
 
 const init = () => {
-  // Landing text movement
-  let list_type_idx = 0
-  setInterval(() => {
-    $('.list-type-example').text(list_types[list_type_idx])
-    list_type_idx = (list_type_idx + 1) % list_types.length
-  }, 2000)
 
   // init LocalStorage
   if(!localStorage['last_update']){

@@ -8,7 +8,7 @@ from .views import *
 urlpatterns = [
     path('', TemplateView.as_view(template_name="index.html"), name='index'),
     path('admin/', admin.site.urls),
-    path('', include('social_django.urls', namespace='social')),
+    path('social/', include('social_django.urls', namespace='social')),
     path('login/', LoginView.as_view(), name='login'),
     path('logout/', logout, name='logout'),
     path('register/', RegisterView.as_view(), name='register'),
