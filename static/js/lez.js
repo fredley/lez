@@ -218,10 +218,6 @@ const init = () => {
 
   if(is_logged_in){
     get_lists(() => {
-      console.log(lists)
-      console.log(lists.sort((a,b) => {
-        return new Date(a.modified) - new Date(b.modified)
-      }))
       list_id = lists.sort((a,b) => {
         return new Date(a.modified) - new Date(b.modified)
       })[0].id
