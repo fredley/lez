@@ -183,4 +183,6 @@ if os.environ.get('ENVIRONMENT') == 'heroku':
 
     STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
     SECRET_KEY = os.environ.get('SECRET_KEY')
+    SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
+    SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
     ALLOWED_HOSTS = ['lez.mamota.net', 'lez.herokuapp.com']
