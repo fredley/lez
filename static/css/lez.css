@@ -63,6 +63,7 @@ input, button{
   cursor: pointer;
   display: block;
   text-align: center;
+  text-transform: capitalize;
 }
 
 .btn-auth:hover{
@@ -92,6 +93,15 @@ input, button{
 .btn-auth.btn-cancel:hover{ background: #CC0F0F; }
 .btn-auth.btn-email:hover,
 .btn-auth.btn-signup:hover{ background: #13bf13; }
+
+.login-reg{
+  text-transform: capitalize;
+}
+
+.btn-select-login.active{
+  color:#fff;
+  background: #00f;
+}
 
 .form-errors {
   color: #e60707;
@@ -283,14 +293,32 @@ header #title{
   background: rgba(248, 105, 82, 0.5)
 }
 
-@media (max-width: 768px) {
- #app{
-  grid-template-columns: repeat(1, 1fr);
- }
- #output{
-  grid-column: 1;
- }
- .hide-small{
+
+.hide-big{
   display: none;
- }
+}
+
+@media (max-width: 768px) {
+  #app{
+    grid-template-columns: repeat(1, 1fr);
+  }
+  #output{
+    grid-column: 1;
+  }
+  .logged-in #title{
+    display: none;
+  }
+  .hide-small{
+    display: none;
+  }
+  .hide-big{
+    display: initial;
+  }
+  header #right{
+    padding-right: 0.5rem;
+    font-size: 140%;
+  }
+  header #right a{
+    color: rgba(255,255,255,0.8);
+  }
 }

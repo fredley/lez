@@ -22,9 +22,12 @@
                 Lez
             </section>
             <section id="right">
-                <a href="{% url 'logout' %}" class="logged-in-only" id="logout">Log Out</a>
+                <a href="{% url 'logout' %}" class="logged-in-only btn-logout"><span class="hide-small">Log Out</span><span class="hide-big"><i class="fa fa-sign-out"></i></span></a>
                 <span class="logged-out-only">
-                    <a href="#" id="login"><i class="fa fa-user-circle"></i> Log in</a> or <a href="#" id="register"> register</a><span class="hide-small"> to save and create more lists</span>
+                    <span class="hide-big">
+                        <a href="#" class="btn-login"><i class="fa fa-user-circle"></i></a>
+                    </span>
+                    <span class="hide-small"><a href="#" class="btn-login"><i class="fa fa-user-circle"></i>Log in</a> or <a href="#" id="register"> register</a> to save and create more lists</span>
                 </span>
             </section>
         </header>
@@ -58,7 +61,11 @@
         </div>
         <div id="login-shade">
             <section>
-                <h1><span class="login-reg">Login</span> with:</h1>
+                <h1 class="hide-small"><span class="login-reg">Login</span> with:</h1>
+                <div class="hide-big">
+                    <a href="#" class='btn-auth first btn-select-login' data-type="login">Login with:</a>
+                    <a href="#" class='btn-auth last btn-select-login'  data-type="register">Register with:</a>
+                </div>
                 <div>
                     <button class='btn-auth btn-google first' id="btn-gauth"><i class="fa fa-google-plus" aria-hidden="true"></i> Google</button>
                     <button id="btn-login-email" class='last btn-auth btn-email'><i class="fa fa-envelope-o" aria-hidden="true"></i> Email</button>

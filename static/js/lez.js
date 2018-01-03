@@ -5,7 +5,7 @@ const input_title = $("#input-title")
 const btn_yes = $("#btn-yes")
 const btn_notnow = $("#btn-notnow")
 const btn_no = $("#btn-no")
-const btn_login = $("#login")
+const btn_login = $(".btn-login")
 const btn_register = $("#register")
 const btn_login_email = $("#btn-login-email")
 const btn_signup = $("#btn-signup")
@@ -74,6 +74,7 @@ const get_next = () => {
 const save_local = () => {
   localStorage['last_update'] = new Date().valueOf()
   localStorage['list_items'] = JSON.stringify(list)
+  list_id && (localStorage['list_id'] = list_id)
 }
 
 const save_title = () => {
@@ -191,11 +192,20 @@ const get_list = (id) => {
 const set_logged_in = () => {
   $('.logged-out-only').hide()
   $('.logged-in-only').show()
+  $('body').addClass('logged-in')
 }
 
 const set_logged_out = () => {
   $('.logged-out-only').show()
   $('.logged-in-only').hide()
+  $('body').removeClass('logged-in')
+}
+
+const set_auth_mode = (mode) => {
+  auth_mode = mode
+  $('.login-reg').text(mode)
+  $('.btn-select-login').removeClass('active')
+  $('.btn-select-login[data-type=' + mode + ']').addClass('active')
 }
 
 const init = () => {
@@ -205,7 +215,7 @@ const init = () => {
     localStorage['last_update'] = new Date().valueOf()
     localStorage['list_title'] = title
     localStorage['list_items'] = JSON.stringify(list)
-    localStorage['list_id'] = list_id
+    list_id && (localStorage['list_id'] = list_id)
   }else{
     title = localStorage['list_title']
     list = JSON.parse(localStorage['list_items'])
@@ -271,9 +281,13 @@ $(document).ready(() => {
     remove_item()
   })
 
+  $('.btn-select-login').on('click', function(e){
+    e.preventDefault()
+    set_auth_mode($(this).attr('data-type'))
+  })
+
   btn_login.on('click', () => {
-    $('.login-reg').text('Login')
-    auth_mode = 'login'
+    set_auth_mode('login')
     login_shade.addClass('visible')
   })
 
@@ -292,8 +306,7 @@ $(document).ready(() => {
   })
 
   btn_register.on('click', () => {
-    $('.login-reg').text('Register')
-    auth_mode = 'register'
+    set_auth_mode('register')
     login_shade.addClass('visible')
   })
 
@@ -369,7 +382,7 @@ $(document).ready(() => {
     })
   })
 
-  $('#logout').on('click', () => {
+  $('.btn-logout').on('click', () => {
     Object.keys(localStorage).map((k) => {
       delete localStorage[k]
     })
