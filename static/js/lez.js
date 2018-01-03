@@ -402,6 +402,7 @@ $(document).ready(() => {
                     setTimeout(() => {$('#login-shade section').show()}, 500)
                     login_shade.removeClass('visible')
                     get_lists()
+                    set_logged_in()
                   }
                 })
               }else{
