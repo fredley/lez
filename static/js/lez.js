@@ -379,10 +379,44 @@ $(document).ready(() => {
     const checker = setInterval(() => {
       if(!w || w.closed){
         console.log("Logged in!")
+        console.log(is_logged_in)
         clearInterval(checker)
+        if(is_logged_in){
         setTimeout(() => {$('#login-shade section').show()}, 500)
         login_shade.removeClass('visible')
-        // todo get lists
+        if(is_logged_in){
+          if(list_id){
+            get_list(list_id)
+          }else{
+            get_lists(() => {
+              if(!lists.length){
+                console.log("New account")
+                $.ajax({
+                  url: "api/lists/add/",
+                  method: "post",
+                  data: {
+                    title: title,
+                    items: JSON.stringify(list),
+                    csrfmiddlewaretoken: get_csrf_token()
+                  },
+                  success: (data) => {
+                    list_id = data.id
+                    get_lists()
+                  }
+                })
+              }else{
+                list_id = lists.sort((a,b) => {
+                  return new Date(a.modified) - new Date(b.modified)
+                })[0].id
+                get_list(list_id)
+              }
+            })
+          }
+        }else{
+          $('#login-shade section').fadeIn()
+        }
+
+        }
       }
     }, 200)
   })
