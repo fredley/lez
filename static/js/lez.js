@@ -190,14 +190,10 @@ const get_list = (id) => {
 }
 
 const set_logged_in = () => {
-  $('.logged-out-only').hide()
-  $('.logged-in-only').show()
   $('body').addClass('logged-in')
 }
 
 const set_logged_out = () => {
-  $('.logged-out-only').show()
-  $('.logged-in-only').hide()
   $('body').removeClass('logged-in')
 }
 
@@ -226,7 +222,7 @@ const init = () => {
     }
   }
 
-  input_title.val(title)
+  is_logged_in || input_title.val(title)
 
   // Auth
   is_logged_in ? set_logged_in() : set_logged_out()

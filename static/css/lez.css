@@ -298,6 +298,22 @@ header #title{
   display: none;
 }
 
+.logged-in-only{
+  display: none;
+}
+
+.logged-out-only{
+  display: initial;
+}
+
+.logged-in .logged-in-only{
+  display: initial;
+}
+
+.logged-in .logged-out-only{
+  display: none;
+}
+
 @media (max-width: 768px) {
   #app{
     grid-template-columns: repeat(1, 1fr);
