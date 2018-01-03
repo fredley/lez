@@ -379,12 +379,11 @@ $(document).ready(() => {
     }
     const checker = setInterval(() => {
       if(!w || w.closed){
-        console.log("Logged in!")
-        console.log(is_logged_in)
         clearInterval(checker)
         if(is_logged_in){
           if(list_id){
             get_list(list_id)
+            gauth_cleanup()
           }else{
             get_lists(() => {
               if(!lists.length){
@@ -399,17 +398,16 @@ $(document).ready(() => {
                   },
                   success: (data) => {
                     list_id = data.id
-                    setTimeout(() => {$('#login-shade section').show()}, 500)
-                    login_shade.removeClass('visible')
-                    get_lists()
-                    set_logged_in()
+                    gauth_cleanup()
                   }
                 })
               }else{
+                console.log("Existing account")
                 list_id = lists.sort((a,b) => {
                   return new Date(a.modified) - new Date(b.modified)
                 })[0].id
                 get_list(list_id)
+                gauth_cleanup(false)
               }
             })
           }
@@ -421,3 +419,10 @@ $(document).ready(() => {
   })
 
 })
+
+const gauth_cleanup = (should_get=true) => {
+  setTimeout(() => {$('#login-shade section').show()}, 500)
+  login_shade.removeClass('visible')
+  set_logged_in()
+  should_get && get_lists()
+}
