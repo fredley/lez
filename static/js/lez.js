@@ -31,6 +31,11 @@ const shuffle = (a) => {
     return a
 }
 
+window.set_logged_in = () => {
+  // used by gauth popup
+  is_logged_in = true
+}
+
 const get_csrf_token = () => {
     let cookieValue = null
     const name = 'csrftoken'
@@ -378,9 +383,6 @@ $(document).ready(() => {
         console.log(is_logged_in)
         clearInterval(checker)
         if(is_logged_in){
-        setTimeout(() => {$('#login-shade section').show()}, 500)
-        login_shade.removeClass('visible')
-        if(is_logged_in){
           if(list_id){
             get_list(list_id)
           }else{
@@ -397,6 +399,8 @@ $(document).ready(() => {
                   },
                   success: (data) => {
                     list_id = data.id
+                    setTimeout(() => {$('#login-shade section').show()}, 500)
+                    login_shade.removeClass('visible')
                     get_lists()
                   }
                 })
@@ -410,8 +414,6 @@ $(document).ready(() => {
           }
         }else{
           $('#login-shade section').fadeIn()
-        }
-
         }
       }
     }, 200)
