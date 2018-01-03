@@ -24,7 +24,7 @@
             <section id="right">
                 <a href="{% url 'logout' %}" class="logged-in-only" id="logout">Log Out</a>
                 <span class="logged-out-only">
-                    <a href="#" id="login"><i class="fa fa-user-circle"></i> Log in</a> or <a href="#" id="register"> register</a> to save and create more lists
+                    <a href="#" id="login"><i class="fa fa-user-circle"></i> Log in</a> or <a href="#" id="register"> register</a><span class="hide-small"> to save and create more lists</span>
                 </span>
             </section>
         </header>
@@ -52,7 +52,7 @@
                     <h1>Your list is empty!</h1>
                 </div>
                 <div class="no-suggestions">
-                    <h1>No more suggestions for now, would you like to reset?</h1>
+                    <h1>No more suggestions for now, would you like to <a href="#" id="btn-reset">reset suggestions</a>?</h1>
                 </div>
             </section>
         </div>
@@ -78,21 +78,20 @@
               integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4="
               crossorigin="anonymous"></script>
         <script>
-            let is_logged_in = {{ user.is_authenticated|yesno:"1,0" }}
+            let is_logged_in = {{ user.is_authenticated|yesno:"true,false" }}
             const csrf_token = "{{ csrf_token }}"
-            const glogin = "{% url 'social:begin' 'google-oauth2' %}";
-            function gpop(url) {
-              const w = window.open(url, 'name', 'height=600,width=450')
-              if (window.focus) {
-                w.focus()
-              }
-            }
         </script>
         <script src="{% static 'js/lez.js' %}"></script>
-        <!-- <script>
-            window.ga=function(){ga.q.push(arguments)};ga.q=[];ga.l=+new Date;
-            ga("create","UA-XXXXX-Y","auto");ga("send","pageview")
+        <!-- Global site tag (gtag.js) - Google Analytics -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111944711-1"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+
+          gtag('config', 'UA-111944711-1');
         </script>
-        <script src="https://www.google-analytics.com/analytics.js" async defer></script> -->
+
+        <script src="https://www.google-analytics.com/analytics.js" async defer></script>
     </body>
 </html>

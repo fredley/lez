@@ -187,3 +187,4 @@ if os.environ.get('ENVIRONMENT') == 'heroku':
     SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
     SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.environ.get('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
     ALLOWED_HOSTS = ['lez.mamota.net', 'lez.herokuapp.com']
+    MIDDLEWARE += ['lez.middleware.ForceSecureMiddleware']

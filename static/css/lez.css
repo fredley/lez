@@ -290,4 +290,7 @@ header #title{
  #output{
   grid-column: 1;
  }
+ .hide-small{
+  display: none;
+ }
 }

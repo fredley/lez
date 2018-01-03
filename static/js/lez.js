@@ -9,6 +9,7 @@ const btn_login = $("#login")
 const btn_register = $("#register")
 const btn_login_email = $("#btn-login-email")
 const btn_signup = $("#btn-signup")
+const btn_reset = $("#btn-reset")
 
 const login_shade = $('#login-shade')
 const login_email = $('#email-login')
@@ -59,7 +60,6 @@ const get_next = () => {
     $('#output > div').removeClass('visible')
     if(list.length){
       $('#output .no-suggestions').addClass('visible')
-      // todo reset suggested
     }else{
       $('#output .no-items').addClass('visible')
     }
@@ -252,6 +252,12 @@ $(document).ready(() => {
     enter_value()
   })
 
+  btn_reset.on("click", (e) => {
+    e.preventDefault()
+    suggested = []
+    get_next()
+  })
+
   btn_yes.on("click", () => {
     remove_item()
   })
@@ -373,7 +379,7 @@ $(document).ready(() => {
 
   $('#btn-gauth').on('click', () => {
     $('#login-shade section').fadeOut()
-    const w = window.open(glogin, 'name', 'height=600,width=450')
+    const w = window.open("/social/login/google-oauth2", 'name', 'height=600,width=450')
     if (window.focus) {
       w.focus()
     }
