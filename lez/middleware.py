@@ -2,11 +2,15 @@ from django.shortcuts import redirect
 from django.conf import settings
 from django.core.exceptions import MiddlewareNotUsed
 
-class ForceSecureMiddleware(object):
+class ForceSecureMiddleware:
   """Middleware that redirects http to https traffic."""
 
-  def process_request(self, request):
+  def __init__(self, get_response):
     if settings.DEBUG:
-        return
+      raise MiddlewareNotUsed
+    self.get_response = get_response
+
+  def __call__(self, request):
     if not request.is_secure():
       return redirect("https://" + request.get_host() + request.get_full_path())
+    return self.get_response(request)
