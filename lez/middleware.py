@@ -5,7 +5,7 @@ class ForceSecureMiddleware(object):
 """Middleware that redirects http to https traffic."""
 
 def __init__(self):
-    if settings.DEBUG or not SITE_DOMAIN:
+    if settings.DEBUG:
         raise MiddlewareNotUsed
 
 def process_request(self, request):
