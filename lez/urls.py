@@ -10,6 +10,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('social/', include('social_django.urls', namespace='social')),
     path('login/', LoginView.as_view(), name='login'),
+    path('success/', TemplateView.as_view(template_name="auth_success.html")),
     path('logout/', logout, name='logout'),
     path('register/', RegisterView.as_view(), name='register'),
     path('api/', include([

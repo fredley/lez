@@ -370,4 +370,21 @@ $(document).ready(() => {
     input_field.val('')
   })
 
+  $('#btn-gauth').on('click', () => {
+    $('#login-shade section').fadeOut()
+    const w = window.open(glogin, 'name', 'height=600,width=450')
+    if (window.focus) {
+      w.focus()
+    }
+    const checker = setInterval(() => {
+      if(!w || w.closed){
+        console.log("Logged in!")
+        clearInterval(checker)
+        setTimeout(() => {$('#login-shade section').show()}, 500)
+        login_shade.removeClass('visible')
+        // todo get lists
+      }
+    }, 200)
+  })
+
 })

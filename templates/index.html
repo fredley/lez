@@ -60,7 +60,7 @@
             <section>
                 <h1><span class="login-reg">Login</span> with:</h1>
                 <div>
-                    <a class='btn-auth btn-google first' href="{% url 'social:begin' 'google-oauth2' %}" _blank="true"><i class="fa fa-google-plus" aria-hidden="true"></i> Google</a>
+                    <button class='btn-auth btn-google first' id="btn-gauth"><i class="fa fa-google-plus" aria-hidden="true"></i> Google</button>
                     <button id="btn-login-email" class='last btn-auth btn-email'><i class="fa fa-envelope-o" aria-hidden="true"></i> Email</button>
                     <div id="email-login">
                         <input id="login-email" type="email" placeholder="email address">
@@ -80,6 +80,13 @@
         <script>
             let is_logged_in = {{ user.is_authenticated|yesno:"1,0" }}
             const csrf_token = "{{ csrf_token }}"
+            const glogin = "{% url 'social:begin' 'google-oauth2' %}";
+            function gpop(url) {
+              const w = window.open(url, 'name', 'height=600,width=450')
+              if (window.focus) {
+                w.focus()
+              }
+            }
         </script>
         <script src="{% static 'js/lez.js' %}"></script>
         <!-- <script>

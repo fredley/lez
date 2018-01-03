@@ -13,7 +13,6 @@ from .models import List, ListItem
 def get_lists(user):
   return list(List.objects.filter(user=user).values('title', 'modified', 'id'))
 
-
 class GetLists(LoginRequiredMixin, View):
 
   http_method_names = ['get']
