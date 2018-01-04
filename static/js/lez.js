@@ -440,7 +440,20 @@ $(document).ready(() => {
               get_list(list_id)
             }else{
               if(list.length){
-                //todo
+                //push up as new list
+                $.ajax({
+                  url: "api/lists/add/",
+                  method: "post",
+                  data: {
+                    title: title,
+                    items: JSON.stringify(list),
+                    csrfmiddlewaretoken: get_csrf_token()
+                  },
+                  success: (data) => {
+                    list_id = data.id
+                    get_lists()
+                  }
+                })
               }else{
                 get_list(data.lists.sort((a,b) => { return new Date(a.modified) - new Date(b.modified) })[0].id)
               }
