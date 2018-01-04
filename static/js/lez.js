@@ -42,19 +42,25 @@ window.gauth_login = () => {
   is_logged_in = true
 }
 
+const gauth_cleanup = (should_get=true) => {
+  setTimeout(() => {$('#login-shade section').show()}, 500)
+  login_shade.removeClass('visible')
+  set_logged_in()
+  should_get && get_lists()
+}
+
 const get_csrf_token = () => {
     let cookieValue = null
     const name = 'csrftoken'
     if (document.cookie && document.cookie != '') {
          document.cookie.split(';').map((cookie) => {
-            cookie = jQuery.trim(cookie)
-            // Does this cookie string begin with the name we want?
+            cookie = cookie.trim()
             if (cookie.substring(0, name.length + 1) == (name + '=')) {
                 cookieValue = decodeURIComponent(cookie.substring(name.length + 1))
             }
          })
     }
-    return cookieValue;
+    return cookieValue
 }
 
 const show_splash = () => {
@@ -533,10 +539,3 @@ $(document).ready(() => {
   })
 
 })
-
-const gauth_cleanup = (should_get=true) => {
-  setTimeout(() => {$('#login-shade section').show()}, 500)
-  login_shade.removeClass('visible')
-  set_logged_in()
-  should_get && get_lists()
-}

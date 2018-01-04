@@ -11,7 +11,7 @@
         <link rel="stylesheet" src="//normalize-css.googlecode.com/svn/trunk/normalize.css">
         <link href="https://fonts.googleapis.com/css?family=Open+Sans+Condensed:300|Raleway" rel="stylesheet">
         <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-        <link rel="stylesheet" href="{% static 'css/lez.css' %}">
+        <link rel="stylesheet" href="{% static 'css/lez.min.css' %}">
     </head>
     <body class="{% if user.is_authenticated %}logged-in{% endif %}">
         <header>
@@ -44,7 +44,7 @@
                 <div class="splash">
                     <p>Stressed out by your list growing too huge?</p>
                     <hr>
-                    <p>Lez is like a todo list where you can't see the list.</p>
+                    <p>Lez is like a todo list where you <br>can't see the list.</p>
                     <hr>
                     <p>Add items any time, and when you want a suggestion, Lez will give you one.</p>
                     <hr>
@@ -121,7 +121,7 @@
             let is_logged_in = {{ user.is_authenticated|yesno:"true,false" }}
             const csrf_token = "{{ csrf_token }}"
         </script>
-        <script src="{% static 'js/lez.js' %}"></script>
+        <script src="{% static 'js/lez.min.js' %}"></script>
         <!-- Global site tag (gtag.js) - Google Analytics -->
         <script async src="https://www.googletagmanager.com/gtag/js?id=UA-111944711-1"></script>
         <script>
