@@ -27,5 +27,5 @@ urlpatterns = [
       ])),
       path('dump/', DumpLists.as_view()),
     ])),
-    path('.well-known/acme-challenge/NIcxy-1cwG_a7cTRymHIa8NuXXdNx7JUqN-9ssEDGTc', CertView.as_view())
+    path('robots.txt', TemplateView.as_view(template_name='robots.txt')),
 ]
