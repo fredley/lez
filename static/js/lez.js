@@ -32,8 +32,13 @@ const shuffle = (a) => {
     return a
 }
 
-window.set_logged_in = () => {
-  // used by gauth popup
+const url_pattern = /^(http|https):\/\/[^ "<>]+$/
+
+const is_url = (s) => {
+  return url_pattern.test(s)
+}
+
+window.gauth_login = () => {
   is_logged_in = true
 }
 
@@ -52,6 +57,16 @@ const get_csrf_token = () => {
     return cookieValue;
 }
 
+const show_splash = () => {
+  $('#output > div').removeClass('visible')
+  $('#output .splash').addClass('visible')
+}
+
+const show_cover = () => {
+  $('#output > div').removeClass('visible')
+  $('#output .cover').addClass('visible')
+}
+
 const get_next = () => {
   let suggestions = shuffle(list.filter((v) => {
     return suggested.indexOf(v.value) < 0
@@ -66,9 +81,13 @@ const get_next = () => {
     return
   }
   suggestion = suggestions[0]
-  $('#suggestion').text(suggestion.value)
+  if(is_url(suggestion.value)){
+    $('#suggestion').html('<a target="_blank" href="' + suggestion.value + '">' + suggestion.value.split('//')[1] + '</a> <i class="fa fa-external-link"></i>')
+  }else{
+    $('#suggestion').text(suggestion.value)
+  }
   $('#output > div').removeClass('visible')
-  $('#output .contents').addClass('visible')
+  $('#output .suggest').addClass('visible')
 }
 
 const save_local = () => {
@@ -93,19 +112,34 @@ const save_title = () => {
       title: new_title
     }
   })
+  lists = lists.map((l) => {
+    if(l.id == list_id){
+      l.title = new_title
+    }
+    return l
+  })
   title = new_title
 }
+
+let input_message_timer = null
 
 const enter_value = () => {
   const value = input_field.val()
 
   if(value === ""){
-    //todo empty
+    $('.input-messages').addClass('visible error').text("Be a bit more creative than that!")
+    clearInterval(input_message_timer)
+    input_message_timer = setTimeout(() => {
+      $('.input-messages').removeClass('visible error')
+    }, 2000)
     return
   }
-  if(list.indexOf(value) >= 0){
-    //todo already there
-    console.log("Already in list")
+  if(list.map((l) => { return l.value }).indexOf(value) >= 0){
+    $('.input-messages').addClass('visible error').text("You already added that!")
+    clearInterval(input_message_timer)
+    input_message_timer = setTimeout(() => {
+      $('.input-messages').removeClass('visible error')
+    }, 2000)
     return
   }
 
@@ -118,11 +152,10 @@ const enter_value = () => {
         csrfmiddlewaretoken: get_csrf_token()
       },
       success: (data) => {
-        console.log(data)
         list.push({value: value, id: data.id})
         save_local()
         if(list.length === 1){
-          get_next()
+          show_cover()
         }
       },
     })
@@ -130,10 +163,14 @@ const enter_value = () => {
     list.push({value: value, id: 0})
     save_local()
     if(list.length === 1){
-      get_next()
+      show_cover()
     }
   }
-
+  $('.input-messages').removeClass('error').addClass('visible').text("Added " + value + " to " + title)
+  clearInterval(input_message_timer)
+  input_message_timer = setTimeout(() => {
+    $('.input-messages').removeClass('visible')
+  }, 2000)
   input_field.val('')
 }
 
@@ -146,7 +183,6 @@ const remove_item = () => {
         csrfmiddlewaretoken: get_csrf_token()
       },
       success: (data) => {
-        console.log(data)
         list = list.filter((v) => {
           return v.value !== suggestion.value
         })
@@ -174,17 +210,57 @@ const get_lists = (cb) => {
   })
 }
 
-const get_list = (id) => {
+const get_list = (id, cb=null) => {
   $.ajax({
     url: "api/lists/" + id + "/",
     method: "get",
     success: (data) => {
-      console.log(data)
       list_id = id
       list = data.values
       title = data.title
       input_title.val(title)
-      get_next()
+      if(list.length){
+        show_cover()
+      }else{
+        $('#output > div').removeClass('visible')
+      }
+      save_local()
+      cb && cb()
+    }
+  })
+}
+
+const show_list_list = () => {
+  const ls = $('<ul>')
+  lists.map((l) => {
+    let check = (l.id == list_id) ? '<i class="fa fa-check"></i> ' : ''
+    ls.append('<li data-id="' + l.id + '">' + check + l.title + '</li>')
+  })
+  ls.append('<li><i class="fa fa-plus"></i> Add New List</li>')
+  $('.list-container').html(ls)
+  $('.list-container li').on('click', function(){
+    const id = $(this).attr('data-id')
+    if(id){
+      get_list(id)
+      $('.shade').removeClass('visible')
+    }else{
+      $.ajax({
+        url: "api/lists/add/",
+        method: "post",
+        data: {
+          title: "New List",
+          items: JSON.stringify([]),
+          csrfmiddlewaretoken: get_csrf_token()
+        },
+        success: (data) => {
+          list_id = data.id
+          get_list(list_id, () => {
+            $('#output > div').removeClass('visible')
+            $('.shade').removeClass('visible')
+            $('#input-title').focus()
+          })
+        }
+      })
     }
   })
 }
@@ -217,8 +293,9 @@ const init = () => {
     list = JSON.parse(localStorage['list_items'])
     list_id = localStorage['list_id']
     if(list.length && !is_logged_in){
-      get_next()
-      $('#output .contents').addClass('visible')
+      show_cover()
+    }else if(!is_logged_in){
+      show_splash()
     }
   }
 
@@ -228,12 +305,17 @@ const init = () => {
   is_logged_in ? set_logged_in() : set_logged_out()
 
   if(is_logged_in){
-    get_lists(() => {
-      list_id = lists.sort((a,b) => {
-        return new Date(a.modified) - new Date(b.modified)
-      })[0].id
+    if(list_id){
       get_list(list_id)
-    })
+      get_lists()
+    }else{
+      get_lists(() => {
+        list_id = lists.sort((a,b) => {
+          return new Date(a.modified) - new Date(b.modified)
+        })[0].id
+        get_list(list_id)
+      })
+    }
   }
 
 }
@@ -256,6 +338,10 @@ $(document).ready(() => {
 
   input_button.on("click", () => {
     enter_value()
+  })
+
+  $('#btn-suggest').on('click', () => {
+    get_next()
   })
 
   btn_reset.on("click", (e) => {
@@ -287,12 +373,19 @@ $(document).ready(() => {
     login_shade.addClass('visible')
   })
 
-  login_shade.on('click', () => {
-    login_shade.removeClass('visible')
+  $('.shade').on('click', (e) => {
+    if(e.target.tagName.toLowerCase() === 'div'){
+      $('.shade').removeClass('visible')
+    }
   })
 
-  login_shade.find('section').on('click', (e) => {
-    e.stopPropagation()
+  $('#btn-donate').on('click', () => {
+    $('#donate-shade').addClass('visible')
+  })
+
+  $('#btn-list-select').on('click', () => {
+    show_list_list()
+    $('#list-list').addClass('visible')
   })
 
   btn_login_email.on('click', () => {
@@ -322,13 +415,11 @@ $(document).ready(() => {
         csrfmiddlewaretoken: get_csrf_token()
       },
       success: (data) => {
-        console.log(data)
         if(data.success){
           $('.form-errors').html("")
           is_logged_in = true
           set_logged_in()
           if(auth_mode === 'register'){
-            console.log("Pushing up")
             // push up local values, if any to new list
             $.ajax({
               url: "api/lists/add/",
@@ -349,11 +440,8 @@ $(document).ready(() => {
               get_list(list_id)
             }else{
               if(list.length){
-                console.log("uh oh")
                 //todo
               }else{
-                console.log(data.lists)
-                console.log(data.lists.sort((a,b) => { return new Date(a.modified) - new Date(b.modified) })[0].id)
                 get_list(data.lists.sort((a,b) => { return new Date(a.modified) - new Date(b.modified) })[0].id)
               }
             }
@@ -402,7 +490,6 @@ $(document).ready(() => {
           }else{
             get_lists(() => {
               if(!lists.length){
-                console.log("New account")
                 $.ajax({
                   url: "api/lists/add/",
                   method: "post",
@@ -417,7 +504,6 @@ $(document).ready(() => {
                   }
                 })
               }else{
-                console.log("Existing account")
                 list_id = lists.sort((a,b) => {
                   return new Date(a.modified) - new Date(b.modified)
                 })[0].id

@@ -7,6 +7,11 @@ a{
   color:#000;
   text-decoration: none;
 }
+a:hover,
+a:focus,
+a:active{
+  text-decoration: underline;
+}
 body, html{
   height:100%;
   width:100%;
@@ -24,7 +29,7 @@ input, button{
   line-height: 1.6rem;
 }
 
-#login-shade{
+.shade{
   position: fixed;
   width:100%;
   height: 100%;
@@ -39,12 +44,12 @@ input, button{
   pointer-events: none;
 }
 
-#login-shade.visible{
+.shade.visible{
   opacity: 1;
   pointer-events: all;
 }
 
-#login-shade section{
+.shade section{
   width: 20rem;
   background: #fff;
   border-radius: 1rem;
@@ -97,10 +102,12 @@ input, button{
 .login-reg{
   text-transform: capitalize;
 }
-
+.btn-select-login{
+  color: #aaa;
+}
 .btn-select-login.active{
   color:#fff;
-  background: #00f;
+  background: #30ddc4;
 }
 
 .form-errors {
@@ -161,6 +168,22 @@ header #left{
   grid-column: 1;
 }
 
+header #left i,
+header #left input{
+  display: block;
+  float: left;
+}
+header #left i{
+  font-size: 140%;
+  line-height: 140%;
+  width: 10%;
+  text-align: center;
+  padding-right: 2%;
+}
+header #left input{
+  width: 90%;
+}
+
 header #right{
   font-family: 'Raleway', sans-serif;
   grid-column: 3;
@@ -202,24 +225,30 @@ header #title{
   flex-direction: column;
 }
 
+.list-container ul {
+  width: 100%;
+  height: auto;
+}
+
+.list-container li {
+  list-style: none;
+  width: 100%;
+  text-align: left;
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  padding: 0.6rem 0;
+  cursor:pointer;
+}
+
+.list-container li:last-child{
+  border-bottom: none;
+}
+
 #input{
   grid-column:1;
 }
 
-#output{
-  grid-column:2;
-  background: rgba(0,0,0,0.1)
-}
-
-#output > div{
-  opacity: 0;
-  transition: opacity 0.25s ease-in-out;
-  display: none;
-}
-
-#output > div.visible{
-  opacity: 1;
-  display: block;
+#input div{
+  width: 100%;
 }
 
 #input h1{
@@ -227,10 +256,41 @@ header #title{
   font-size:200%;
 }
 
-#input p{
+#input p,
+#output p{
   font-family: 'Raleway', sans-serif;
-  margin-bottom:0.6rem;
-  padding:0 0.5rem;
+}
+#output .splash p{
+  padding:0 3rem;
+  max-width: 30rem;
+  margin: 0 auto;
+  text-align: left;
+  margin-bottom:1rem;
+}
+
+#output hr{
+  max-width: 30rem;
+  border-bottom: 0.1rem solid rgba(0,0,0,0.1);
+  height: 0;
+  width: 20rem;
+  margin: 1rem auto;
+  border-top: 0;
+}
+
+#input .input-messages{
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out;
+  margin:-1rem 0 2rem 0;
+  font-style: italic;
+  text-align: center;
+}
+
+#input .input-messages.error{
+  color:#960000;
+}
+
+#input .input-messages.visible{
+  opacity: 0.7;
 }
 
 #input-value{
@@ -269,6 +329,27 @@ header #title{
   border-radius: 2rem;
   cursor: pointer;
   transition: background 0.2s ease-in-out;
+  margin-bottom:2rem;
+}
+
+#output{
+  grid-column:2;
+  background: rgba(0,0,0,0.1)
+}
+
+#output > div{
+  opacity: 0;
+  transition: opacity 0.25s ease-in-out;
+  display: none;
+}
+
+#output > div.visible{
+  opacity: 1;
+  display: block;
+}
+
+#output h1{
+  margin-bottom:2rem;
 }
 
 #output p{
@@ -279,6 +360,10 @@ header #title{
 #output .suggestion{
   font-family: 'Raleway', sans-serif;
   font-size:200%;
+}
+
+#output .suggestion a{
+  text-decoration: underline;
 }
 
 #btn-yes:hover{
@@ -292,7 +377,6 @@ header #title{
 #btn-no:hover{
   background: rgba(248, 105, 82, 0.5)
 }
-
 
 .hide-big{
   display: none;
@@ -314,12 +398,54 @@ header #title{
   display: none;
 }
 
+.donate{
+  position: fixed;
+  bottom: 1rem;
+  right:1rem;
+  font-size: 120%;
+  color:rgb(88, 153, 150);
+  text-shadow: 0 -1px 0 rgba(255,255,255,0.3)
+}
+
+#donate-shade p{
+  margin-top: 1rem;
+}
+
+#pp-form{
+  margin-top:1rem;
+}
+
+.login-pointer{
+  position: absolute;
+  top: 4rem;
+  right: 2rem;
+  font-size: 120%;
+  opacity: 0.7;
+  background: rgba(255,255,255,0.7);
+  padding: 0.5rem 1rem;
+  border-radius: 1rem;
+}
+
+.logged-in .login-pointer{
+  display: none;
+}
+
 @media (max-width: 768px) {
   #app{
     grid-template-columns: repeat(1, 1fr);
   }
+  #input h1{
+    margin-top:2rem;
+  }
+  #input{
+    padding-bottom:2rem;
+  }
   #output{
     grid-column: 1;
+    justify-content: start;
+  }
+  .logged-in #left{
+    grid-column: 1 / 3
   }
   .logged-in #title{
     display: none;
@@ -334,7 +460,14 @@ header #title{
     padding-right: 0.5rem;
     font-size: 140%;
   }
-  header #right a{
-    color: rgba(255,255,255,0.8);
+}
+
+@media (min-width: 769px) {
+  #app section.list-container{
+    position: fixed;
+    left: 1rem;
+    top: 3rem;
+    height: auto;
+    padding:0.5rem 1rem;
   }
 }
