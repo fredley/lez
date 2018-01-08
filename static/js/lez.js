@@ -43,6 +43,14 @@ window.gauth_login = () => {
 }
 
 const gauth_cleanup = (should_get=true) => {
+  $.ajax({
+    url: '/get_token/',
+    method: 'get',
+    success: (data) => {
+      auth_token = data.auth_token
+      $("#input-auth-token").val(auth_token)
+    }
+  })
   setTimeout(() => {$('#login-shade section').show()}, 500)
   login_shade.removeClass('visible')
   set_logged_in()

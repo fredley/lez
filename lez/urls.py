@@ -13,6 +13,7 @@ urlpatterns = [
     path('success/', TemplateView.as_view(template_name="auth_success.html")),
     path('logout/', logout, name='logout'),
     path('register/', RegisterView.as_view(), name='register'),
+    path('get_token/', GetTokenView.as_view(), name='get_token'),
     path('api/', include([
       path('lists/', include([
         path('', GetLists.as_view()),

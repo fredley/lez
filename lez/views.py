@@ -207,6 +207,17 @@ class IndexView(TemplateView):
     return context
 
 
+class GetTokenView(LoginRequiredMixin, View):
+
+  http_method_names = ['get']
+
+  def get(self, request, *args, **kwargs):
+    return JsonResponse({
+      'auth_token': AuthToken.objects.get_or_create(user=self.request.user)[0].token
+    })
+
+
+
 class CertView(View):
 
   def get(self, request, *args, **kwargs):
