@@ -1,5 +1,5 @@
 # Lez
-## A Pez Dispenser for Lists
+*A Pez Dispenser for Lists*
 
 **You can use Lez at (lez.mamota.net)[https://lez.mamota.net].**
 
