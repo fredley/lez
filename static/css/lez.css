@@ -194,6 +194,7 @@ header #right{
 
 header #title{
   grid-column: 2;
+  justify-self: center;
 }
 
 header #title img{
