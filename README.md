@@ -3,7 +3,11 @@
 
 **You can use Lez at (lez.mamota.net)[https://lez.mamota.net].**
 
-### Api Documentation
+Stressed out by your list growing too huge? Lez is like a todo list where you can't see the list.
+
+Add items any time, and when you want a suggestion, Lez will give you one. Your lists are stored on your device, sign up to save them and access them anywhere.
+
+### Api
 
 You can use Lez entirely via its JSON api if you wish. Use the `auth_token` from the heart popup in the app as a GET or POST parameter:
 
