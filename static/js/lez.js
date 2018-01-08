@@ -311,6 +311,7 @@ const init = () => {
   is_logged_in ? set_logged_in() : set_logged_out()
 
   if(is_logged_in){
+    $("#input-auth-token").val(auth_token)
     if(list_id){
       get_list(list_id)
       get_lists()
@@ -425,6 +426,8 @@ $(document).ready(() => {
           $('.form-errors').html("")
           is_logged_in = true
           set_logged_in()
+          auth_token = data.auth_token
+          $("#input-auth-token").val(auth_token)
           if(auth_mode === 'register'){
             // push up local values, if any to new list
             $.ajax({

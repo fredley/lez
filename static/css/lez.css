@@ -5,12 +5,6 @@
 }
 a{
   color:#000;
-  text-decoration: none;
-}
-a:hover,
-a:focus,
-a:active{
-  text-decoration: underline;
 }
 body, html{
   height:100%;
@@ -162,6 +156,13 @@ header{
 
 header a{
   color: #000;
+  text-decoration: none;
+}
+
+header a:hover,
+header a:focus,
+header a:active,{
+  text-decoration: underline;
 }
 
 header #left{
@@ -193,8 +194,11 @@ header #right{
 
 header #title{
   grid-column: 2;
-  text-align: center;
-  font-size:140%;
+}
+
+header #title img{
+  max-height: 2rem;
+  margin-top: -0.07rem;
 }
 
 #input-title{
@@ -268,11 +272,11 @@ header #title{
   margin-bottom:1rem;
 }
 
-#output hr{
+hr{
   max-width: 30rem;
   border-bottom: 0.1rem solid rgba(0,0,0,0.1);
   height: 0;
-  width: 20rem;
+  width: 80%;
   margin: 1rem auto;
   border-top: 0;
 }
@@ -411,8 +415,30 @@ p.light{
   opacity: 0.2
 }
 
+#donate-shade > section{
+  position: relative;
+}
+
 #donate-shade p{
   margin-top: 1rem;
+}
+
+#donate-shade .gh-link{
+  font-size: 200%;
+  position: absolute;
+  right: 1rem;
+  bottom: 1rem;
+}
+
+#doate-shade hr{
+
+}
+
+#input-auth-token{
+  width: 50%;
+  padding: 0.2rem 0.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid rgba(0,0,0,0.1);
 }
 
 #pp-form{

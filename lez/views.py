@@ -1,19 +1,37 @@
 import json
 
+from django.conf import settings
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth import password_validation, authenticate, backends, login
+from django.contrib.auth.decorators import login_required, REDIRECT_FIELD_NAME
 from django.contrib.auth.models import User
+from django.core.exceptions import PermissionDenied
 from django.core.validators import EmailValidator
 from django.http import JsonResponse, HttpResponse
 from django.shortcuts import get_object_or_404
 from django.views import View
+from django.views.generic import TemplateView
 
-from .models import List, ListItem
+from .models import List, ListItem, AuthToken
 
 def get_lists(user):
   return list(List.objects.filter(user=user).values('title', 'modified', 'id'))
 
-class GetLists(LoginRequiredMixin, View):
+class LoginOrTokenRequiredMixin:
+
+  def dispatch(self, request, *args, **kwargs):
+    if 'auth_token' in list(request.GET.keys()) + list(request.POST.keys()):
+      try:
+        token = request.GET.get('auth_token', request.POST.get('auth_token'))
+        request.user = AuthToken.objects.get(token=token).user
+        return super().dispatch(request, *args, **kwargs)
+      except:
+        raise PermissionDenied
+    return login_required(redirect_field_name=REDIRECT_FIELD_NAME,
+      login_url=settings.LOGIN_URL)(
+      super().dispatch)(request, *args, **kwargs)
+
+class GetLists(LoginOrTokenRequiredMixin, View):
 
   http_method_names = ['get']
 
@@ -23,7 +41,7 @@ class GetLists(LoginRequiredMixin, View):
     })
 
 
-class AddList(LoginRequiredMixin, View):
+class AddList(LoginOrTokenRequiredMixin, View):
 
   http_method_names = ['post']
 
@@ -41,7 +59,7 @@ class AddList(LoginRequiredMixin, View):
     return JsonResponse({'success': True, 'id': ls.id})
 
 
-class RemoveList(LoginRequiredMixin, View):
+class RemoveList(LoginOrTokenRequiredMixin, View):
 
   http_method_names = ['post']
 
@@ -51,7 +69,7 @@ class RemoveList(LoginRequiredMixin, View):
     return JsonResponse({'success': True})
 
 
-class ModifyList(LoginRequiredMixin, View):
+class ModifyList(LoginOrTokenRequiredMixin, View):
 
   http_method_names = ['post']
 
@@ -63,7 +81,7 @@ class ModifyList(LoginRequiredMixin, View):
     return JsonResponse({'success': True})
 
 
-class GetListItems(LoginRequiredMixin, View):
+class GetListItems(LoginOrTokenRequiredMixin, View):
 
   http_method_names = ['get']
 
@@ -75,7 +93,7 @@ class GetListItems(LoginRequiredMixin, View):
     })
 
 
-class AddListItem(LoginRequiredMixin, View):
+class AddListItem(LoginOrTokenRequiredMixin, View):
 
   http_method_names = ['post']
 
@@ -88,7 +106,7 @@ class AddListItem(LoginRequiredMixin, View):
     return JsonResponse({'success': True, 'id': item.id })
 
 
-class RemoveListItem(LoginRequiredMixin, View):
+class RemoveListItem(LoginOrTokenRequiredMixin, View):
 
   http_method_names = ['post']
 
@@ -98,7 +116,7 @@ class RemoveListItem(LoginRequiredMixin, View):
     return JsonResponse({'success': True})
 
 
-class DumpLists(LoginRequiredMixin, View):
+class DumpLists(LoginOrTokenRequiredMixin, View):
 
   http_method_names = ['get']
 
@@ -146,10 +164,12 @@ class RegisterView(View):
         [response['errors']['password'].append(s) for s in e.messages]
 
     if response['success']:
-      User.objects.create_user(username=email, email=email, password=password)
+      u = User.objects.create_user(username=email, email=email, password=password)
+      auth_token = AuthToken.objects.create(user=u)
       user = authenticate(request, username=email, password=password)
       if user:
         login(request, user)
+        response['auth_token'] = auth_token
         response['lists'] = get_lists(user)
       else:
         response['success'] = False
@@ -168,9 +188,24 @@ class LoginView(View):
     user = authenticate(request, username=email, password=password)
     if user and user.is_active:
       login(request, user)
-      return JsonResponse({'success': True, 'lists': get_lists(user)})
+      auth_token = AuthToken.objects.get_or_create(user=self.request.user)[0].token
+      return JsonResponse({'success': True, 'lists': get_lists(user), 'auth_token': auth_token})
     else:
       return JsonResponse({'success': False, 'errors': {'all': ['Invalid login.']}})
+
+
+class IndexView(TemplateView):
+
+  template_name="index.html"
+
+  def get_context_data(self, *args, **kwargs):
+    context = super().get_context_data(*args, **kwargs)
+    if not self.request.user.is_anonymous:
+      context['auth_token'] = AuthToken.objects.get_or_create(user=self.request.user)[0].token
+    else:
+      context['auth_token'] = ''
+    return context
+
 
 class CertView(View):
 

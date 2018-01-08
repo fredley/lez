@@ -20,7 +20,10 @@
                 <input type="text" id="input-title">
             </section>
             <section id="title">
-                Lez
+                <img
+                src="{% static 'img/lez-ldpi.png' %}"
+                srcset="{% static 'img/lez-hdpi.png' %} 2x"
+                alt="Lez">
             </section>
             <section id="right">
                 <a href="{% url 'logout' %}" class="logged-in-only btn-logout"><span class="hide-small">Log Out</span><span class="hide-big"><i class="fa fa-sign-out"></i></span></a>
@@ -100,7 +103,7 @@
         <div id="donate-shade" class="shade">
             <section>
                 <h1>About Lez</h1>
-                <p><a href="https://github.com/fredley/lez" target="_blank"><i class="fa fa-github"></i> Lez</a> was made in order to get away from the crushing weight of long New Year's Resolution lists.</p>
+                <p>Lez was made in order to get away from the crushing weight of long New Year's Resolution lists.</p>
                 <p>You can use it any way you like, but it works well for keeping a list of things you want to do for pleasure, stopping that list itself becoming a chore.</p>
                 <p>The name is inspired by a Pez Dispenser.</p>
                 <p>Thank you for your support!</p>
@@ -110,7 +113,11 @@
                 <input type="image" src="https://www.paypalobjects.com/en_GB/i/btn/btn_donate_SM.gif" border="0" name="submit" alt="PayPal – The safer, easier way to pay online!">
                 <img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
                 </form>
-                <p class="light">© Tom White 2018</p>
+                <hr>
+                <label>Auth Token:</label>
+                <input type="text" value="" id="input-auth-token">
+                <p>Check out the api on <a href="https://github.com/fredley/lez" target="_blank">GitHub</a></p>
+                <p class="light">© Tom White 2018</p><a href="https://github.com/fredley/lez" target="_blank" class="gh-link"><i class="fa fa-github"></i></a>
             </section>
         </div>
         <div class="donate" id="btn-donate"><i class="fa fa-heart"></i></div>
@@ -120,6 +127,7 @@
               crossorigin="anonymous"></script>
         <script>
             let is_logged_in = {{ user.is_authenticated|yesno:"true,false" }}
+            let auth_token = "{{ auth_token }}"
             const csrf_token = "{{ csrf_token }}"
         </script>
         <script src="{% static 'js/lez.min.js' %}"></script>

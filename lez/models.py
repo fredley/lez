@@ -1,5 +1,16 @@
+import uuid
+
 from django.contrib.auth.models import User
 from django.db import models
+
+
+def get_token():
+  return str(uuid.uuid4()).replace('-', '')
+
+
+class AuthToken(models.Model):
+  user = models.ForeignKey(User, on_delete=models.CASCADE)
+  token = models.CharField(max_length=32, default=get_token)
 
 
 class List(models.Model):

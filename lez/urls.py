@@ -6,7 +6,7 @@ from django.views.generic.base import TemplateView
 from .views import *
 
 urlpatterns = [
-    path('', TemplateView.as_view(template_name="index.html"), name='index'),
+    path('', IndexView.as_view(), name='index'),
     path('admin/', admin.site.urls),
     path('social/', include('social_django.urls', namespace='social')),
     path('login/', LoginView.as_view(), name='login'),
