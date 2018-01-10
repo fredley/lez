@@ -247,10 +247,14 @@ const get_list = (id, cb=null) => {
 const show_list_list = () => {
   const ls = $('<ul>')
   lists.map((l) => {
-    let check = (l.id == list_id) ? '<i class="fa fa-check"></i> ' : ''
-    ls.append('<li data-id="' + l.id + '">' + check + l.title + '</li>')
+    let check = '', cls = ''
+    if(l.id == list_id){
+      check = '<i class="fa fa-check"></i> '
+      cls = 'active'
+    }
+    ls.append('<li data-id="' + l.id + '" class="' + cls + '">' + check + l.title + '</li>')
   })
-  ls.append('<li><i class="fa fa-plus"></i> Add New List</li>')
+  ls.append('<li class="new-list-row"><i class="fa fa-plus"></i> Add New List</li>')
   $('.list-container').html(ls)
   $('.list-container li').on('click', function(){
     const id = $(this).attr('data-id')
@@ -268,6 +272,11 @@ const show_list_list = () => {
         },
         success: (data) => {
           list_id = data.id
+          lists.push({
+            title: 'New List',
+            modified: new Date(),
+            id: list_id
+          })
           get_list(list_id, () => {
             $('#output > div').removeClass('visible')
             $('.shade').removeClass('visible')
@@ -295,6 +304,11 @@ const set_auth_mode = (mode) => {
 }
 
 const init = () => {
+
+  // 'show' shades to avoid css weirdness
+  setTimeout(() => {
+    $('.shade').show()
+  }, 250)
 
   // init LocalStorage
   if(!localStorage['last_update']){

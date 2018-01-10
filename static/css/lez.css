@@ -36,6 +36,7 @@ input, button{
   opacity: 0;
   transition: opacity 0.3s ease-in-out;
   pointer-events: none;
+  display: none;
 }
 
 .shade.visible{
@@ -166,6 +167,7 @@ header a:active,{
 }
 
 header #left{
+  cursor: pointer;
   grid-column: 1;
 }
 
@@ -230,6 +232,10 @@ header #title img{
   flex-direction: column;
 }
 
+.list-container{
+  overflow: hidden;
+}
+
 .list-container ul {
   width: 100%;
   height: auto;
@@ -240,8 +246,12 @@ header #title img{
   width: 100%;
   text-align: left;
   border-bottom: 1px solid rgba(0,0,0,0.1);
-  padding: 0.6rem 0;
+  padding: 0.6rem 1rem;
   cursor:pointer;
+}
+
+.list-container li.active {
+  background: #d5fff7;
 }
 
 .list-container li:last-child{
@@ -309,6 +319,12 @@ hr{
   max-width: 100%;
 }
 
+#input-value:focus{
+  outline: 0;
+  border: 1px solid #00b8ff;
+  box-shadow: 0 0 5px #00b8ff;
+}
+
 #btn-input{
   background: transparent;
   border: none;
@@ -323,7 +339,7 @@ hr{
   opacity: 0.1;
 }
 #btn-input:hover{
-  opacity: 0.5;
+  color: #00b8ff;
 }
 
 .btn-lez{
@@ -409,7 +425,8 @@ hr{
   right:1rem;
   font-size: 120%;
   color:rgb(88, 153, 150);
-  text-shadow: 0 -1px 0 rgba(255,255,255,0.3)
+  text-shadow: 0 -1px 0 rgba(255,255,255,0.3);
+  cursor:pointer;
 }
 
 p.light{
@@ -499,6 +516,6 @@ p.light{
     left: 1rem;
     top: 3rem;
     height: auto;
-    padding:0.5rem 1rem;
+    padding:0.5rem 0;
   }
 }
