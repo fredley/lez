@@ -307,7 +307,7 @@ const init = () => {
 
   // 'show' shades to avoid css weirdness
   setTimeout(() => {
-    $('.shade').show()
+    $('.shade').css('display', 'flex')
   }, 250)
 
   // init LocalStorage
@@ -346,6 +346,10 @@ const init = () => {
       })
     }
   }
+
+  $("#input-auth-token").on('focus', () => {
+    $("#input-auth-token").select()
+  })
 
 }
 

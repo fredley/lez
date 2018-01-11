@@ -338,7 +338,11 @@ hr{
 #btn-input.disabled{
   opacity: 0.1;
 }
-#btn-input:hover{
+
+#btn-input:hover,
+#btn-input:focus,
+#btn-input:active{
+  outline: 0;
   color: #00b8ff;
 }
 
