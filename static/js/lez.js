@@ -316,6 +316,7 @@ const init = () => {
     localStorage['list_title'] = title
     localStorage['list_items'] = JSON.stringify(list)
     list_id && (localStorage['list_id'] = list_id)
+    show_splash()
   }else{
     title = localStorage['list_title']
     list = JSON.parse(localStorage['list_items'])
